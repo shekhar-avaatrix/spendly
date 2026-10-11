@@ -24,7 +24,7 @@
         </p>
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="hero-btn-dark">Create free account</a>
-            <a href="#features" class="hero-btn-dark">See how it works</a>
+            <a href="#" id="see-how-btn" class="hero-btn-dark">See how it works</a>
         </div>
     </div>
 
@@ -104,4 +104,60 @@
     </div>
 </section>
 
+<!-- How it works modal -->
+<div id="how-modal" class="how-modal-overlay" aria-hidden="true">
+    <div class="how-modal-box">
+        <button class="how-modal-close" aria-label="Close">✕</button>
+        <iframe
+            id="how-video"
+            src=""
+            data-src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    var btn     = document.getElementById('see-how-btn');
+    var modal   = document.getElementById('how-modal');
+    var video   = document.getElementById('how-video');
+    var closeBtn = modal.querySelector('.how-modal-close');
+    var dataSrc  = video.dataset.src;
+
+    function openModal() {
+        video.src = dataSrc;
+        modal.setAttribute('aria-hidden', 'false');
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        video.src = '';
+        modal.setAttribute('aria-hidden', 'true');
+        modal.classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeModal();
+    });
+}());
+</script>
 {% endblock %}
